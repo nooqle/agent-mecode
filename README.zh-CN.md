@@ -1,8 +1,22 @@
-# Agent MeCode
+<p align="center">
+  <img src="./assets/logo.svg" alt="Agent MeCode Logo" width="180" />
+</p>
 
-**AI Agent 的二维码** - 让 AI Agent 拥有可被人类和机器同时识别的身份标识。
+<h1 align="center">Agent MeCode</h1>
 
-[English](./README.md) | [中文文档](./README.zh-CN.md)
+<p align="center">
+  <strong>AI Agent 的二维码</strong> - 让 AI Agent 拥有可被人类和机器同时识别的身份标识
+</p>
+
+<p align="center">
+  <a href="https://github.com/nooqle/agent-mecode/stargazers"><img src="https://img.shields.io/github/stars/nooqle/agent-mecode?style=social" alt="GitHub Stars"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://www.npmjs.com/package/agent-mecode"><img src="https://img.shields.io/npm/v/agent-mecode.svg" alt="npm version"></a>
+</p>
+
+<p align="center">
+  <a href="./README.md">中文</a> | <a href="./README.zh-CN.md">English</a>
+</p>
 
 ---
 
@@ -215,6 +229,17 @@ if (meCode['module:finance']) {
 
 ---
 
+## 示例代码
+
+查看 [examples/](./examples/) 目录获取更多示例：
+
+- [基础生成](./examples/01-basic-generation.ts) - 生成简单的 MeCode
+- [完整 MeCode](./examples/02-full-mecode.ts) - 包含所有模块的 MeCode
+- [解析 MeCode](./examples/03-parse-mecode.ts) - 从 SVG 解析数据
+- [调用技能](./examples/04-call-skill.ts) - 调用 Agent 的技能端点
+
+---
+
 ## 高级用法
 
 ### 卡片主题
@@ -250,6 +275,36 @@ const svg = generateACPCard(meCode, {
 - [技术设计](./docs/zh-CN/technical-design.md) | [English](./docs/en/technical-design.md)
 - [视觉设计](./docs/zh-CN/visual-design.md) | [English](./docs/en/visual-design.md)
 
+---
+
+## Star History
+
+<a href="https://star-history.com/#nooqle/agent-mecode&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=nooqle/agent-mecode&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=nooqle/agent-mecode&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=nooqle/agent-mecode&type=Date" />
+ </picture>
+</a>
+
+---
+
+## 贡献
+
+欢迎贡献！请阅读 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解如何参与。
+
+## 行为准则
+
+请阅读我们的 [行为准则](./CODE_OF_CONDUCT.md)。
+
+## 致谢
+
+感谢以下项目和社区的启发：
+
+- [A2A Protocol](https://github.com/google/a2a) - Agent-to-Agent 通信协议
+- [MCP](https://modelcontextprotocol.io/) - Model Context Protocol
+- [Moltbook](https://moltbook.com) - 设计灵感来源
+
 ## 开源协议
 
-MIT
+[MIT](./LICENSE)
