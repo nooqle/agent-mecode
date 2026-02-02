@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 
@@ -39,7 +39,8 @@ function decodeUrlData(encodedData: string): StoredAgent | null {
       claimed: false,
       createdAt: data.createdAt
     };
-  } catch {
+  } catch (e) {
+    console.error('Failed to decode URL data:', e);
     return null;
   }
 }
@@ -50,39 +51,40 @@ function decodeUrlData(encodedData: string): StoredAgent | null {
 export default function ClaimPage() {
   const params = useParams();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [agent, setAgent] = useState<StoredAgent | null>(null);
   const [loading, setLoading] = useState(true);
   const [claimed, setClaimed] = useState(false);
 
   useEffect(() => {
     const id = params.id as string;
-    if (id) {
-      // First try to decode from URL parameter (serverless-compatible)
-      const encodedData = searchParams.get('data');
-      if (encodedData) {
-        const decodedAgent = decodeUrlData(encodedData);
-        if (decodedAgent) {
-          setAgent(decodedAgent);
-          setLoading(false);
-          return;
-        }
-      }
+    if (!id) return;
 
-      // Fallback: try to fetch from API (works within same instance)
-      fetch(`/api/agent/${id}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setAgent(data.agent);
-          }
-          setLoading(false);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
+    // Get data from URL using window.location (more reliable than useSearchParams)
+    const urlParams = new URLSearchParams(window.location.search);
+    const encodedData = urlParams.get('data');
+
+    if (encodedData) {
+      const decodedAgent = decodeUrlData(encodedData);
+      if (decodedAgent) {
+        setAgent(decodedAgent);
+        setLoading(false);
+        return;
+      }
     }
-  }, [params.id, searchParams]);
+
+    // Fallback: try to fetch from API (works within same instance)
+    fetch(`/api/agent/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setAgent(data.agent);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, [params.id]);
 
   const handleClaim = async () => {
     if (agent) {
