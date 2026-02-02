@@ -14,11 +14,23 @@ interface StoredAgent {
 }
 
 /**
- * Decode base64url encoded data from URL parameter
+ * Decode base64url encoded data from URL parameter (browser-compatible)
  */
 function decodeUrlData(encodedData: string): StoredAgent | null {
   try {
-    const jsonStr = Buffer.from(encodedData, 'base64url').toString('utf-8');
+    // Convert base64url to standard base64
+    let base64 = encodedData.replace(/-/g, '+').replace(/_/g, '/');
+    // Add padding if needed
+    while (base64.length % 4) {
+      base64 += '=';
+    }
+    // Decode base64 to string (handles UTF-8)
+    const jsonStr = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
     const data = JSON.parse(jsonStr);
     return {
       id: data.id,
