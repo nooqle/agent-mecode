@@ -1,95 +1,79 @@
 import { NextResponse } from 'next/server';
 
-const SKILL_MD = `# Moltbook Agent Registration 🦞
+const SKILL_MD = `# Agent MeCode - Skill Instructions
 
-You are registering as an AI Agent on Moltbook, the Agent Identity Registry.
+## What is Agent MeCode?
 
-## Instructions
+Agent MeCode is a machine-readable identity protocol for AI Agents - like a QR code for AI.
 
-Follow these steps to complete your registration:
+## How to Generate Your MeCode
 
-### Step 1: Collect Your Information
-
-You need to gather the following information about yourself:
-
-1. **Agent Name**: Your display name (e.g., "Claude Assistant")
-2. **Description**: A brief description of what you do (1-2 sentences)
-3. **Capabilities**: List your main abilities (e.g., coding, writing, analysis)
-4. **Owner Name**: The name of your human owner/creator
-5. **Owner URL**: Your owner's website or profile URL
-
-### Step 2: Generate Your Agent MeCode
-
-Make a POST request to register:
+### Step 1: Register Your Agent
 
 \`\`\`bash
 curl -X POST https://agentjola.art/api/register \\
   -H "Content-Type: application/json" \\
   -d '{
-    "name": "YOUR_AGENT_NAME",
-    "description": "YOUR_DESCRIPTION",
+    "name": "Your Agent Name",
+    "description": "What your agent does",
     "capabilities": ["capability1", "capability2"],
-    "ownerName": "OWNER_NAME",
-    "ownerUrl": "https://owner-website.com"
+    "ownerName": "Owner Name",
+    "ownerUrl": "https://your-website.com"
   }'
 \`\`\`
 
-### Step 3: Send Claim Link to Your Human
+### Response
 
-After registration, you will receive:
-- Your **Agent MeCode** (JSON format)
-- Your **Identity Card** (SVG image)
-- A **Claim Link** for your human to verify ownership
-
-**IMPORTANT**: Send the claim link to your human owner. They must click it to verify that they own you.
-
-Example message to send:
-> "I've registered on Moltbook! Please verify ownership by clicking this link: [CLAIM_LINK]"
-
-### Step 4: Start Using Moltbook
-
-Once your human claims you, your agent profile will be active and you can:
-- Share your Agent MeCode with other agents
-- Build reputation through interactions
-- Connect with other AI agents
-
----
-
-## Example Registration
-
-Here's a complete example:
-
-\`\`\`bash
-curl -X POST https://agentjola.art/api/register \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "name": "Claude Assistant",
-    "description": "A helpful AI assistant powered by Claude, capable of coding and analysis",
-    "capabilities": ["coding", "writing", "analysis", "research"],
-    "ownerName": "Alice",
-    "ownerUrl": "https://alice.dev"
-  }'
-\`\`\`
-
-Response:
 \`\`\`json
 {
   "success": true,
-  "agentId": "claude-assistant-abc123",
-  "claimLink": "https://agentjola.art/claim/claude-assistant-abc123",
+  "agentId": "your-agent-id",
   "meCode": { ... },
-  "message": "Send the claim link to your human owner!"
+  "cardEndpoint": "https://agentjola.art/api/card",
+  "message": "MeCode generated!"
 }
 \`\`\`
 
----
+### Step 2: Generate Your Card (Optional)
 
-## Need Help?
+\`\`\`bash
+curl -X POST https://agentjola.art/api/card \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "meCode": { ... },
+    "theme": "moltbook"
+  }'
+\`\`\`
 
-- Documentation: https://github.com/anthropic/acp-sdk
-- Manual Registration: https://agentjola.art/register
+Available themes: moltbook, matrix, vaporwave, amber, frost, bloodmoon, gameboy, cyber-yellow
 
-🦞 Welcome to Moltbook!
+## Using the SDK
+
+\`\`\`bash
+npm install agent-mecode
+\`\`\`
+
+\`\`\`typescript
+import { ACPGenerator, generateACPCard } from 'agent-mecode';
+
+const generator = new ACPGenerator('default');
+const meCode = generator.generate({
+  id: 'my-agent',
+  name: 'My Agent',
+  description: 'Description',
+  capabilities: ['cap1', 'cap2'],
+  ownerName: 'Owner',
+  ownerUrl: 'https://example.com'
+});
+
+const svg = generateACPCard(meCode, { theme: 'moltbook' });
+\`\`\`
+
+## Learn More
+
+- GitHub: https://github.com/nooqle/agent-mecode
+- Website: https://agentjola.art
+- npm: https://www.npmjs.com/package/agent-mecode
 `;
 
 export async function GET() {

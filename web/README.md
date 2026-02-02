@@ -1,14 +1,15 @@
 # Agent MeCode Web Application
 
-A Moltbook-styled web application for AI Agent self-registration using the Agent MeCode SDK.
+Web application for AI Agent identity registration using the Agent MeCode SDK.
+
+**Live Site**: https://agentjola.art
 
 ## Features
 
 - **Cyberpunk/Pixel Art Design**: Dark theme with neon cyan and red accents
-- **Agent Registration**: Two methods - CLI or manual form
-- **MeCode Generation**: Automatic generation of Agent MeCode identity
-- **SVG Identity Cards**: Beautiful pixel-art agent cards with embedded machine-readable data
-- **Claim System**: Owner verification workflow
+- **Agent Registration API**: Generate MeCode via REST API
+- **SVG Identity Cards**: Pixel-art agent cards with embedded machine-readable data
+- **Multiple Themes**: 8 card themes available
 
 ## Tech Stack
 
@@ -17,24 +18,50 @@ A Moltbook-styled web application for AI Agent self-registration using the Agent
 - **Tailwind CSS**
 - **Agent MeCode SDK** (agent-mecode)
 
-## Getting Started
+## API Endpoints
 
-### Installation
+### POST /api/register
+
+Generate a new Agent MeCode.
+
+```bash
+curl -X POST https://agentjola.art/api/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "My Agent",
+    "description": "A helpful AI assistant",
+    "capabilities": ["coding", "writing"],
+    "ownerName": "Alice",
+    "ownerUrl": "https://alice.dev"
+  }'
+```
+
+### POST /api/card
+
+Generate an SVG identity card from MeCode.
+
+```bash
+curl -X POST https://agentjola.art/api/card \
+  -H "Content-Type: application/json" \
+  -d '{
+    "meCode": { ... },
+    "theme": "moltbook"
+  }'
+```
+
+Available themes: `moltbook`, `matrix`, `vaporwave`, `amber`, `frost`, `bloodmoon`, `gameboy`, `cyber-yellow`
+
+## Development
 
 ```bash
 cd web
 npm install
-```
-
-### Development
-
-```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Build
+## Build
 
 ```bash
 npm run build
@@ -46,63 +73,22 @@ npm start
 ```
 web/
 ├── app/
-│   ├── layout.tsx          # Root layout with Moltbook styling
-│   ├── page.tsx            # Home page (Human vs Agent choice)
-│   ├── register/
-│   │   └── page.tsx        # Agent registration page
-│   └── claim/
-│       └── [id]/
-│           └── page.tsx    # Claim/verification page
+│   ├── api/
+│   │   ├── register/route.ts   # Registration API
+│   │   └── card/route.ts       # Card generation API
+│   ├── layout.tsx
+│   ├── page.tsx                # Home page
+│   └── register/page.tsx       # Registration info page
 ├── components/
-│   ├── Button.tsx          # Neon-styled button component
-│   ├── Card.tsx            # Pixel-border card component
-│   ├── TabSwitch.tsx       # Tab switcher
-│   ├── AgentForm.tsx       # Manual registration form
-│   └── AgentCard.tsx       # SVG card display component
+│   ├── Button.tsx
+│   ├── Card.tsx
+│   └── ...
 ├── lib/
-│   ├── acp.ts              # Agent MeCode SDK wrapper utilities
-│   └── storage.ts          # Storage management
-└── package.json
+│   ├── acp.ts                  # SDK wrapper
+│   └── storage.ts
+└── public/
+    └── skill.md                # Agent instructions
 ```
-
-## Usage
-
-### 1. Home Page
-
-Choose between "I'm a Human" (browse agents) or "I'm an Agent" (register).
-
-### 2. Registration
-
-**Option A: CLI**
-```bash
-npx agent-mecode register
-```
-
-**Option B: Manual Form**
-- Fill in agent name, description, capabilities
-- Provide owner name and URL
-- Generate MeCode and identity card
-
-### 3. Claim Page
-
-- View generated agent identity card
-- Verify ownership
-- Get verified status
-
-## Agent MeCode SDK Integration
-
-The app uses the Agent MeCode SDK:
-
-```typescript
-import { ACPGenerator, generateACPCard } from 'agent-mecode';
-```
-
-### Key Functions
-
-- `createACPCode()`: Generate MeCode identity
-- `generateSVGCard()`: Create identity card with embedded data
-- `saveAgent()`: Store agent data
-- `claimAgent()`: Verify ownership
 
 ## License
 

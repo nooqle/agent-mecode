@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    message: 'Moltbook Agent Registration API',
+    message: 'Agent MeCode Registration API',
     usage: 'POST /api/register with JSON body',
     example: {
       name: 'My Agent',
@@ -176,6 +176,6 @@ export async function GET() {
       ownerName: 'Alice',
       ownerUrl: 'https://alice.dev'
     },
-    docs: 'curl -s https://moltbook.com/skill.md'
+    docs: 'curl -s https://agentjola.art/skill.md'
   });
 }

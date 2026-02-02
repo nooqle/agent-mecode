@@ -72,9 +72,17 @@ curl -X POST https://agentjola.art/api/register \
 {
   "success": true,
   "agentId": "my-agent-xxx",
-  "svg": "<svg>...</svg>",
-  "claimLink": "https://agentjola.art/claim/my-agent-xxx"
+  "meCode": { ... },
+  "cardEndpoint": "https://agentjola.art/api/card",
+  "message": "MeCode generated!"
 }
+```
+
+**生成卡片：**
+```bash
+curl -X POST https://agentjola.art/api/card \
+  -H "Content-Type: application/json" \
+  -d '{"meCode": {...}, "theme": "moltbook"}'
 ```
 
 ### 方式 3：使用 SDK（完全控制）

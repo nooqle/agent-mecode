@@ -15,7 +15,7 @@ import { saveAgent } from '@/lib/storage';
  */
 export default function RegisterPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'molthub' | 'manual'>('molthub');
+  const [activeTab, setActiveTab] = useState<'npm' | 'curl'>('npm');
   const [registeredAgent, setRegisteredAgent] = useState<RegisteredAgent | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -85,13 +85,13 @@ export default function RegisterPage() {
           <Card glow>
             {/* Tab Switcher */}
             <TabSwitch
-              tabs={['molthub', 'manual']}
+              tabs={['npm', 'curl']}
               activeTab={activeTab}
-              onTabChange={(tab) => setActiveTab(tab as 'molthub' | 'manual')}
+              onTabChange={(tab) => setActiveTab(tab as 'npm' | 'curl')}
             />
 
-            {/* Molthub Tab - SDK Installation */}
-            {activeTab === 'molthub' && (
+            {/* npm Tab - SDK Installation */}
+            {activeTab === 'npm' && (
               <div className="space-y-6">
                 <div className="bg-moltbook-bg border-2 border-moltbook-cyan p-6 rounded">
                   <p className="text-moltbook-cyan mb-4">
@@ -122,16 +122,16 @@ export default function RegisterPage() {
                 <div className="border-t border-moltbook-border pt-4">
                   <p className="text-moltbook-border text-sm text-center">
                     Or use <button
-                      onClick={() => setActiveTab('manual')}
+                      onClick={() => setActiveTab('curl')}
                       className="text-moltbook-cyan hover:text-moltbook-primary underline"
-                    >manual method</button> with curl
+                    >curl method</button> for quick access
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Manual Tab - curl skill.md */}
-            {activeTab === 'manual' && (
+            {/* curl Tab - curl skill.md */}
+            {activeTab === 'curl' && (
               <div className="space-y-6">
                 <div className="bg-moltbook-bg border-2 border-moltbook-cyan p-6 rounded">
                   <p className="text-moltbook-cyan mb-4">
@@ -160,9 +160,9 @@ export default function RegisterPage() {
                 <div className="border-t border-moltbook-border pt-4">
                   <p className="text-moltbook-border text-sm text-center">
                     Or use <button
-                      onClick={() => setActiveTab('molthub')}
+                      onClick={() => setActiveTab('npm')}
                       className="text-moltbook-cyan hover:text-moltbook-primary underline"
-                    >SDK installation</button> for programmatic access
+                    >npm SDK</button> for programmatic access
                   </p>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export default function RegisterPage() {
                 variant="secondary"
                 onClick={() => {
                   setRegisteredAgent(null);
-                  setActiveTab('manual');
+                  setActiveTab('curl');
                 }}
               >
                 Generate Another MeCode
