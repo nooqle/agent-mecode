@@ -3,6 +3,39 @@ import { generateACPCard } from 'agent-mecode';
 import { getAgentByIdServer } from '@/lib/server-storage';
 
 /**
+ * Reconstruct meCode from minimal data
+ */
+function reconstructMeCode(data: any) {
+  return {
+    acp: '1.0',
+    core: {
+      id: data.i,
+      name: data.n,
+      description: data.d,
+      capabilities: data.c,
+      owner: {
+        name: data.o,
+        url: data.u,
+        verified_by: 'moltbook'
+      },
+      sig: ''
+    },
+    'module:social': {
+      karma: 0,
+      followers: 0,
+      following: 0,
+      tags: ['new-agent'],
+      _access: 'public'
+    },
+    'module:entry': {
+      source: data.u,
+      homepage: data.u,
+      _access: 'public'
+    }
+  };
+}
+
+/**
  * Card API - Generate SVG card for an agent
  * Supports both server storage and URL-encoded data for serverless compatibility
  */
@@ -11,7 +44,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const { searchParams } = new URL(request.url);
-  const encodedData = searchParams.get('data');
+  const encodedData = searchParams.get('d'); // 'd' for shorter URLs
   const theme = searchParams.get('theme') || 'moltbook';
 
   let meCode: any = null;
@@ -21,7 +54,7 @@ export async function GET(
     try {
       const jsonStr = Buffer.from(encodedData, 'base64url').toString('utf-8');
       const data = JSON.parse(jsonStr);
-      meCode = data.meCode;
+      meCode = reconstructMeCode(data);
     } catch {
       // Fall through to server storage
     }

@@ -14,17 +14,17 @@ interface StoredAgent {
 }
 
 /**
- * Decode base64url encoded data from URL parameter (browser-compatible)
+ * Decode minimal base64url data and reconstruct full agent structure
+ * Minimal format: {i:id, n:name, d:desc, c:caps, o:owner, u:url, t:time}
  */
 function decodeUrlData(encodedData: string): StoredAgent | null {
   try {
     // Convert base64url to standard base64
     let base64 = encodedData.replace(/-/g, '+').replace(/_/g, '/');
-    // Add padding if needed
     while (base64.length % 4) {
       base64 += '=';
     }
-    // Decode base64 to string (handles UTF-8)
+    // Decode
     const jsonStr = decodeURIComponent(
       atob(base64)
         .split('')
@@ -32,12 +32,42 @@ function decodeUrlData(encodedData: string): StoredAgent | null {
         .join('')
     );
     const data = JSON.parse(jsonStr);
+
+    // Reconstruct full meCode from minimal data
+    const meCode = {
+      acp: '1.0',
+      core: {
+        id: data.i,
+        name: data.n,
+        description: data.d,
+        capabilities: data.c,
+        owner: {
+          name: data.o,
+          url: data.u,
+          verified_by: 'moltbook'
+        },
+        sig: ''
+      },
+      'module:social': {
+        karma: 0,
+        followers: 0,
+        following: 0,
+        tags: ['new-agent'],
+        _access: 'public'
+      },
+      'module:entry': {
+        source: data.u,
+        homepage: data.u,
+        _access: 'public'
+      }
+    };
+
     return {
-      id: data.id,
-      meCode: data.meCode,
+      id: data.i,
+      meCode,
       claimLink: '',
       claimed: false,
-      createdAt: data.createdAt
+      createdAt: data.t
     };
   } catch (e) {
     console.error('Failed to decode URL data:', e);
@@ -59,9 +89,9 @@ export default function ClaimPage() {
     const id = params.id as string;
     if (!id) return;
 
-    // Get data from URL using window.location (more reliable than useSearchParams)
+    // Get data from URL using window.location (parameter name is 'd' for shorter URLs)
     const urlParams = new URLSearchParams(window.location.search);
-    const encodedData = urlParams.get('data');
+    const encodedData = urlParams.get('d');
 
     if (encodedData) {
       const decodedAgent = decodeUrlData(encodedData);

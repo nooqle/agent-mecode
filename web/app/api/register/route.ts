@@ -140,15 +140,21 @@ export async function POST(request: NextRequest) {
     const baseUrl = request.headers.get('host') || 'agentjola.art';
     const protocol = baseUrl.includes('localhost') ? 'http' : 'https';
 
-    // Encode meCode data in URL for serverless compatibility
-    const encodedData = Buffer.from(JSON.stringify({
-      id,
-      meCode: code,
-      createdAt: new Date().toISOString()
-    })).toString('base64url');
+    // Encode minimal data in URL for serverless compatibility (shortened keys)
+    // i=id, n=name, d=desc, c=caps, o=owner, u=url, t=time
+    const minimalData = {
+      i: id,
+      n: name,
+      d: description,
+      c: capabilities,
+      o: ownerName,
+      u: ownerUrl,
+      t: new Date().toISOString()
+    };
+    const encodedData = Buffer.from(JSON.stringify(minimalData)).toString('base64url');
 
-    const claimLink = `${protocol}://${baseUrl}/claim/${id}?data=${encodedData}`;
-    const cardUrl = `${protocol}://${baseUrl}/api/card/${id}?data=${encodedData}`;
+    const claimLink = `${protocol}://${baseUrl}/claim/${id}?d=${encodedData}`;
+    const cardUrl = `${protocol}://${baseUrl}/api/card/${id}?d=${encodedData}`;
 
     // Also save to server storage (works within same instance)
     saveAgentServer({
