@@ -3,7 +3,7 @@
  * Provides utilities for generating and managing ACP codes
  */
 
-import { ACPGenerator, generateACPCard, ACPCode, AgentData } from '@anthropic/acp-sdk';
+import { ACPGenerator, generateACPCard, ACPCode, AgentData } from 'agent-mecode';
 
 export interface RegisteredAgent {
   id: string;

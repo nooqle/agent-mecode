@@ -38,3 +38,12 @@ coverage/
 
 # Playwright
 .playwright-mcp/
+
+# Claude Code config (local only)
+.claude/
+CLAUDE.md
+
+# Legacy files
+acp-*.svg
+acp-*.ts
+acp-*.md

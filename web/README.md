@@ -1,29 +1,28 @@
-# Moltbook Agent Registry
+# Agent MeCode Web Application
 
-A Moltbook-styled web application for AI Agent self-registration using the ACP SDK.
+A Moltbook-styled web application for AI Agent self-registration using the Agent MeCode SDK.
 
 ## Features
 
 - **Cyberpunk/Pixel Art Design**: Dark theme with neon cyan and red accents
-- **Agent Registration**: Two methods - CLI (molthub) or manual form
-- **ACP Code Generation**: Automatic generation of Agent Code Protocol identity
-- **SVG Identity Cards**: Beautiful pixel-art agent cards with lobster mascot
+- **Agent Registration**: Two methods - CLI or manual form
+- **MeCode Generation**: Automatic generation of Agent MeCode identity
+- **SVG Identity Cards**: Beautiful pixel-art agent cards with embedded machine-readable data
 - **Claim System**: Owner verification workflow
-- **LocalStorage Backend**: Demo storage (ready for backend integration)
 
 ## Tech Stack
 
 - **Next.js 14** (App Router)
 - **TypeScript**
 - **Tailwind CSS**
-- **ACP SDK** (@anthropic/acp-sdk)
+- **Agent MeCode SDK** (agent-mecode)
 
 ## Getting Started
 
 ### Installation
 
 ```bash
-cd D:\ACP\web
+cd web
 npm install
 ```
 
@@ -45,7 +44,7 @@ npm start
 ## Project Structure
 
 ```
-D:\ACP\web\
+web/
 ├── app/
 │   ├── layout.tsx          # Root layout with Moltbook styling
 │   ├── page.tsx            # Home page (Human vs Agent choice)
@@ -57,12 +56,12 @@ D:\ACP\web\
 ├── components/
 │   ├── Button.tsx          # Neon-styled button component
 │   ├── Card.tsx            # Pixel-border card component
-│   ├── TabSwitch.tsx       # Tab switcher (molthub/manual)
+│   ├── TabSwitch.tsx       # Tab switcher
 │   ├── AgentForm.tsx       # Manual registration form
 │   └── AgentCard.tsx       # SVG card display component
 ├── lib/
-│   ├── acp.ts              # ACP SDK wrapper utilities
-│   └── storage.ts          # LocalStorage management
+│   ├── acp.ts              # Agent MeCode SDK wrapper utilities
+│   └── storage.ts          # Storage management
 └── package.json
 ```
 
@@ -74,76 +73,37 @@ Choose between "I'm a Human" (browse agents) or "I'm an Agent" (register).
 
 ### 2. Registration
 
-**Option A: CLI (molthub tab)**
+**Option A: CLI**
 ```bash
-npx @anthropic/acp-sdk register
+npx agent-mecode register
 ```
 
 **Option B: Manual Form**
 - Fill in agent name, description, capabilities
 - Provide owner name and URL
-- Generate ACP code and identity card
+- Generate MeCode and identity card
 
 ### 3. Claim Page
 
 - View generated agent identity card
-- Verify ownership (demo mode - instant claim)
+- Verify ownership
 - Get verified status
 
-## Design System
+## Agent MeCode SDK Integration
 
-### Colors
-
-- Background: `#0f0f1a` (moltbook-bg)
-- Alt Background: `#1a1a2e` (moltbook-bg-alt)
-- Primary: `#00ffd5` (neon cyan)
-- Secondary: `#4fc3f7` (cyan)
-- Accent: `#ff4444` (red)
-- Border: `#333355`
-
-### Typography
-
-- Font: Courier New (monospace)
-- Uppercase labels
-- Neon text effects with glow
-
-### Components
-
-- Pixel borders with glow effects
-- Rounded corners on cards
-- Hover animations
-- Pulsing glow on primary elements
-
-## ACP SDK Integration
-
-The app uses the ACP SDK from the parent directory:
+The app uses the Agent MeCode SDK:
 
 ```typescript
-import { ACPGenerator, generateACPCard } from '@anthropic/acp-sdk';
+import { ACPGenerator, generateACPCard } from 'agent-mecode';
 ```
 
 ### Key Functions
 
-- `createACPCode()`: Generate ACP identity
-- `generateSVGCard()`: Create pixel-art identity card
-- `saveAgent()`: Store in localStorage
+- `createACPCode()`: Generate MeCode identity
+- `generateSVGCard()`: Create identity card with embedded data
+- `saveAgent()`: Store agent data
 - `claimAgent()`: Verify ownership
-
-## Future Enhancements
-
-- [ ] Backend API integration
-- [ ] Real domain verification
-- [ ] Agent discovery/search
-- [ ] Social features (follow, karma)
-- [ ] A2A communication
-- [ ] QR code generation
-- [ ] Export identity cards
-- [ ] Multi-theme support
 
 ## License
 
 MIT
-
-## Credits
-
-Built with the Agent Code Protocol (ACP) SDK by Anthropic.

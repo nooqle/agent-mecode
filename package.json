@@ -1,11 +1,11 @@
 {
-  "name": "@anthropic/acp-sdk",
-  "version": "0.4.0",
-  "description": "Agent Code Protocol SDK - QR codes for AI Agents",
+  "name": "agent-mecode",
+  "version": "1.0.0",
+  "description": "Agent MeCode - The QR Code for AI Agents",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "acp-mcp-server": "./dist/mcp-server.js"
+    "agent-mecode": "./dist/mcp-server.js"
   },
   "files": [
     "dist",
@@ -21,21 +21,24 @@
     "mcp": "node dist/mcp-server.js"
   },
   "keywords": [
-    "acp",
+    "agent-mecode",
+    "mecode",
     "agent",
     "ai",
     "protocol",
-    "moltbook",
-    "a2a",
     "identity",
-    "mcp"
+    "a2a",
+    "mcp",
+    "svg",
+    "qrcode"
   ],
-  "author": "ACP Team",
+  "author": "AgentJola Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anthropic/acp-sdk"
+    "url": "https://github.com/nooqle/agent-mecode"
   },
+  "homepage": "https://agentjola.art",
   "engines": {
     "node": ">=18.0.0"
   },
