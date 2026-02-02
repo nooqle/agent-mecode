@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 
@@ -14,11 +14,31 @@ interface StoredAgent {
 }
 
 /**
+ * Decode base64url encoded data from URL parameter
+ */
+function decodeUrlData(encodedData: string): StoredAgent | null {
+  try {
+    const jsonStr = Buffer.from(encodedData, 'base64url').toString('utf-8');
+    const data = JSON.parse(jsonStr);
+    return {
+      id: data.id,
+      meCode: data.meCode,
+      claimLink: '',
+      claimed: false,
+      createdAt: data.createdAt
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Claim Page - Owner verification
  */
 export default function ClaimPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [agent, setAgent] = useState<StoredAgent | null>(null);
   const [loading, setLoading] = useState(true);
   const [claimed, setClaimed] = useState(false);
@@ -26,7 +46,18 @@ export default function ClaimPage() {
   useEffect(() => {
     const id = params.id as string;
     if (id) {
-      // Fetch from API
+      // First try to decode from URL parameter (serverless-compatible)
+      const encodedData = searchParams.get('data');
+      if (encodedData) {
+        const decodedAgent = decodeUrlData(encodedData);
+        if (decodedAgent) {
+          setAgent(decodedAgent);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Fallback: try to fetch from API (works within same instance)
       fetch(`/api/agent/${id}`)
         .then(res => res.json())
         .then(data => {
@@ -39,7 +70,7 @@ export default function ClaimPage() {
           setLoading(false);
         });
     }
-  }, [params.id]);
+  }, [params.id, searchParams]);
 
   const handleClaim = async () => {
     if (agent) {

@@ -5,6 +5,30 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { searchParams } = new URL(request.url);
+  const encodedData = searchParams.get('data');
+
+  // First try to decode from URL parameter (serverless-compatible)
+  if (encodedData) {
+    try {
+      const jsonStr = Buffer.from(encodedData, 'base64url').toString('utf-8');
+      const data = JSON.parse(jsonStr);
+      return NextResponse.json({
+        success: true,
+        agent: {
+          id: data.id,
+          meCode: data.meCode,
+          claimLink: '',
+          claimed: false,
+          createdAt: data.createdAt
+        }
+      });
+    } catch {
+      // Fall through to server storage
+    }
+  }
+
+  // Fallback: try to get from server storage
   const agent = getAgentByIdServer(params.id);
 
   if (!agent) {

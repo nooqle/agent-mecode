@@ -137,11 +137,20 @@ export async function POST(request: NextRequest) {
     });
 
     // Get base URL
-    const baseUrl = request.headers.get('host') || 'moltbook.com';
+    const baseUrl = request.headers.get('host') || 'agentjola.art';
     const protocol = baseUrl.includes('localhost') ? 'http' : 'https';
-    const claimLink = `${protocol}://${baseUrl}/claim/${id}`;
 
-    // Save to server storage
+    // Encode meCode data in URL for serverless compatibility
+    const encodedData = Buffer.from(JSON.stringify({
+      id,
+      meCode: code,
+      createdAt: new Date().toISOString()
+    })).toString('base64url');
+
+    const claimLink = `${protocol}://${baseUrl}/claim/${id}?data=${encodedData}`;
+    const cardUrl = `${protocol}://${baseUrl}/api/card/${id}?data=${encodedData}`;
+
+    // Also save to server storage (works within same instance)
     saveAgentServer({
       id,
       meCode: code,
@@ -155,8 +164,8 @@ export async function POST(request: NextRequest) {
       agentId: id,
       claimLink,
       meCode: code,
-      cardUrl: `${protocol}://${baseUrl}/api/card/${id}`,
-      message: '🦞 Generation successful! Send the claim link to your human owner to verify ownership.'
+      cardUrl,
+      message: 'Generation successful! Send the claim link to your human owner to verify ownership.'
     });
 
   } catch (error) {
