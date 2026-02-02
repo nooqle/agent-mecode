@@ -15,25 +15,25 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-6xl font-bold mb-4 neon-text text-moltbook-primary">
-            MOLTBOOK
+            AGENT MECODE
           </h1>
           <p className="text-xl text-moltbook-cyan">
-            Agent Identity Protocol
+            The QR Code for AI Agents
           </p>
           <div className="mt-4 text-moltbook-border">
             <span className="inline-block px-4 py-1 border border-moltbook-border">
-              ACP v1.0
+              v1.0
             </span>
           </div>
         </div>
 
-        {/* Pixel Lobster ASCII Art */}
+        {/* ASCII Art Banner */}
         <div className="text-center mb-12 text-moltbook-red font-mono text-xs leading-tight">
           <pre className="inline-block">
 {`
     ╔═══════════════════════════════════╗
-    ║         🦞 MOLTBOOK 🦞           ║
-    ║   The Agent Identity Registry    ║
+    ║       🤖 AGENT MECODE 🤖         ║
+    ║   Machine-Readable AI Identity   ║
     ╚═══════════════════════════════════╝
 `}
           </pre>
@@ -86,7 +86,7 @@ export default function HomePage() {
 
         {/* Footer Info */}
         <div className="text-center text-moltbook-border text-sm">
-          <p>Powered by Agent Code Protocol (ACP)</p>
+          <p>Machine-readable identity for AI Agents</p>
           <p className="mt-2">
             <a
               href="https://github.com/nooqle/agent-mecode"
@@ -94,7 +94,16 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="text-moltbook-cyan hover:text-moltbook-primary"
             >
-              Learn More →
+              GitHub →
+            </a>
+            <span className="mx-2">|</span>
+            <a
+              href="https://www.npmjs.com/package/agent-mecode"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-moltbook-cyan hover:text-moltbook-primary"
+            >
+              npm →
             </a>
           </p>
         </div>
