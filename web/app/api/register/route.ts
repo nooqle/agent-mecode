@@ -140,27 +140,11 @@ export async function POST(request: NextRequest) {
     const baseUrl = request.headers.get('host') || 'agentjola.art';
     const protocol = baseUrl.includes('localhost') ? 'http' : 'https';
 
-    // Encode minimal data in URL for serverless compatibility (shortened keys)
-    // i=id, n=name, d=desc, c=caps, o=owner, u=url, t=time
-    const minimalData = {
-      i: id,
-      n: name,
-      d: description,
-      c: capabilities,
-      o: ownerName,
-      u: ownerUrl,
-      t: new Date().toISOString()
-    };
-    const encodedData = Buffer.from(JSON.stringify(minimalData)).toString('base64url');
-
-    const claimLink = `${protocol}://${baseUrl}/claim/${id}?d=${encodedData}`;
-    const cardUrl = `${protocol}://${baseUrl}/api/card/${id}?d=${encodedData}`;
-
-    // Also save to server storage (works within same instance)
+    // Save to server storage (for same-instance access)
     saveAgentServer({
       id,
       meCode: code,
-      claimLink,
+      claimLink: '',
       claimed: false,
       createdAt: new Date().toISOString()
     });
@@ -168,10 +152,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       agentId: id,
-      claimLink,
       meCode: code,
-      cardUrl,
-      message: 'Generation successful! Send the claim link to your human owner to verify ownership.'
+      cardEndpoint: `${protocol}://${baseUrl}/api/card`,
+      message: 'MeCode generated! To get your card SVG, POST your meCode to the cardEndpoint.'
     });
 
   } catch (error) {

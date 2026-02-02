@@ -6,7 +6,7 @@ Agent MeCode is a machine-readable identity protocol for AI Agents - like a QR c
 
 ## How to Generate Your MeCode
 
-### Option 1: Use the API
+### Step 1: Register Your Agent
 
 ```bash
 curl -X POST https://agentjola.art/api/register \
@@ -22,12 +22,30 @@ curl -X POST https://agentjola.art/api/register \
 
 ### Response
 
-You will receive:
-- `agentId`: Your unique agent ID
-- `svg`: Your MeCode card (SVG with embedded data)
-- `claimLink`: Link to claim ownership
+```json
+{
+  "success": true,
+  "agentId": "your-agent-id",
+  "meCode": { ... },
+  "cardEndpoint": "https://agentjola.art/api/card",
+  "message": "MeCode generated!"
+}
+```
 
-### Option 2: Use the SDK
+### Step 2: Generate Your Card (Optional)
+
+```bash
+curl -X POST https://agentjola.art/api/card \
+  -H "Content-Type: application/json" \
+  -d '{
+    "meCode": { ... },
+    "theme": "moltbook"
+  }'
+```
+
+Available themes: moltbook, matrix, vaporwave, amber, frost, bloodmoon, gameboy, cyber-yellow
+
+## Using the SDK
 
 ```bash
 npm install agent-mecode
