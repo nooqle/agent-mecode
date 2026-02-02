@@ -5,7 +5,7 @@
 <h1 align="center">Agent MeCode</h1>
 
 <p align="center">
-  <strong>AI Agent 的二维码</strong> - 让 AI Agent 拥有可被人类和机器同时识别的身份标识
+  <strong>QR Code for AI Agents</strong> - Machine-readable identity for AI Agents
 </p>
 
 <p align="center">
@@ -15,59 +15,59 @@
 </p>
 
 <p align="center">
-  <a href="./README.md">中文</a> | <a href="./README.zh-CN.md">English</a>
+  <a href="./README.md">English</a> | <a href="./README.zh-CN.md">中文</a>
 </p>
 
 ---
 
-## 什么是 Agent MeCode？
+## What is Agent MeCode?
 
-就像人类用二维码分享信息一样，Agent MeCode 让 AI Agent 可以分享自己的身份、能力和支付信息。
+Just like humans use QR codes to share information, Agent MeCode lets AI Agents share their identity, capabilities, and payment information.
 
 ```
-人类世界: 二维码 → 扫描 → 获取信息 → 行动
-Agent世界: MeCode → 解析 → 获取能力 → 交互/支付
+Human World: QR Code → Scan → Get Info → Action
+Agent World: MeCode  → Parse → Get Capabilities → Interact/Pay
 ```
 
-**一张 MeCode 卡片同时具备：**
-- 人类可读的视觉设计（SVG 卡片）
-- 机器可读的嵌入数据（Base64 JSON）
+**A MeCode card provides:**
+- Human-readable visual design (SVG card)
+- Machine-readable embedded data (Base64 JSON)
 
 ---
 
-## 谁需要使用？
+## Who Should Use This?
 
-| 角色 | 需求 | 推荐方式 |
-|------|------|----------|
-| **普通用户** | 为我的 Agent 生成一个身份卡片 | 使用在线平台 |
-| **平台开发者** | 在我的平台上提供 MeCode 生成服务 | 使用 SDK |
-| **AI Agent** | 读取其他 Agent 的 MeCode 信息 | 解析 SVG |
+| Role | Need | Recommended Method |
+|------|------|-------------------|
+| **End Users** | Generate an identity card for my Agent | Use online platform |
+| **Platform Developers** | Provide MeCode generation in my platform | Use SDK |
+| **AI Agents** | Read other Agents' MeCode information | Parse SVG |
 
 ---
 
-## 场景一：生成 MeCode
+## Scenario 1: Generate MeCode
 
-### 方式 1：使用在线平台（最简单）
+### Method 1: Online Platform (Easiest)
 
-访问 [https://agentjola.art](https://agentjola.art)，填写表单即可生成。
+Visit [https://agentjola.art](https://agentjola.art) and fill out the form.
 
-### 方式 2：调用 API（程序化生成）
+### Method 2: API (Programmatic)
 
-适合需要批量生成或集成到自己系统的场景。
+For batch generation or system integration.
 
 ```bash
 curl -X POST https://agentjola.art/api/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "My Agent",
-    "description": "一个有用的 AI 助手",
+    "description": "A helpful AI assistant",
     "capabilities": ["coding", "analysis"],
     "ownerName": "Alice",
     "ownerUrl": "https://alice.dev"
   }'
 ```
 
-**响应：**
+**Response:**
 ```json
 {
   "success": true,
@@ -78,16 +78,16 @@ curl -X POST https://agentjola.art/api/register \
 }
 ```
 
-**生成卡片：**
+**Generate Card:**
 ```bash
 curl -X POST https://agentjola.art/api/card \
   -H "Content-Type: application/json" \
   -d '{"meCode": {...}, "theme": "moltbook"}'
 ```
 
-### 方式 3：使用 SDK（完全控制）
+### Method 3: SDK (Full Control)
 
-适合平台开发者，需要自定义生成逻辑。
+For platform developers who need custom generation logic.
 
 ```bash
 npm install agent-mecode
@@ -96,86 +96,86 @@ npm install agent-mecode
 ```typescript
 import { ACPGenerator, generateACPCard } from 'agent-mecode';
 
-// 1. 创建生成器
+// 1. Create generator
 const generator = new ACPGenerator('default');
 
-// 2. 生成 MeCode 数据
+// 2. Generate MeCode data
 const meCode = generator.generate({
   id: 'my-agent',
   name: 'My Agent',
-  description: '一个有用的 AI 助手',
+  description: 'A helpful AI assistant',
   capabilities: ['coding', 'analysis'],
   ownerName: 'Alice',
   ownerUrl: 'https://alice.dev'
 });
 
-// 3. 生成 SVG 卡片（内嵌 MeCode 数据）
+// 3. Generate SVG card (with embedded MeCode data)
 const svg = generateACPCard(meCode, { theme: 'moltbook' });
 ```
 
 ---
 
-## 场景二：解析 MeCode（给 AI Agent）
+## Scenario 2: Parse MeCode (For AI Agents)
 
-当你的 AI Agent 收到一张 MeCode SVG 卡片时，按以下步骤解析：
+When your AI Agent receives a MeCode SVG card, follow these steps:
 
-### 步骤 1：找到嵌入数据
+### Step 1: Find Embedded Data
 
-MeCode 数据嵌入在 SVG 的 `<acp:mecode>` 标签中：
+MeCode data is embedded in the SVG's `<acp:mecode>` tag:
 
 ```xml
 <svg ...>
   <metadata>
     <acp:mecode xmlns:acp="https://agentjola.art/mecode">
-      eyJhY3AiOiIxLjAiLCJjb3JlIjp7...  <!-- Base64 编码的 JSON -->
+      eyJhY3AiOiIxLjAiLCJjb3JlIjp7...  <!-- Base64 encoded JSON -->
     </acp:mecode>
   </metadata>
   ...
 </svg>
 ```
 
-### 步骤 2：解码数据
+### Step 2: Decode Data
 
 ```typescript
-// 从 SVG 中提取 Base64 数据
+// Extract Base64 data from SVG
 const match = svg.match(/<acp:mecode[^>]*>([^<]+)<\/acp:mecode>/);
 const base64Data = match[1].trim();
 
-// 解码为 JSON
+// Decode to JSON
 const meCode = JSON.parse(
   Buffer.from(base64Data, 'base64').toString('utf-8')
 );
 ```
 
-### 步骤 3：使用数据
+### Step 3: Use Data
 
-解码后你将获得完整的 Agent 信息：
+After decoding, you'll have complete Agent information:
 
 ```javascript
-// 获取基本信息
+// Get basic info
 console.log(meCode.core.name);        // "My Agent"
 console.log(meCode.core.capabilities); // ["coding", "analysis"]
 
-// 获取技能端点（如果有）
+// Get skill endpoints (if available)
 if (meCode['module:skills']) {
   const skills = meCode['module:skills'].skills;
-  // 调用 Agent 的技能 API
+  // Call Agent's skill API
 }
 
-// 获取支付地址（如果有）
+// Get payment addresses (if available)
 if (meCode['module:finance']) {
   const addresses = meCode['module:finance'].addresses;
-  // 进行支付
+  // Make payment
 }
 ```
 
 ---
 
-## MeCode 数据结构
+## MeCode Data Structure
 
-### Core（必需）
+### Core (Required)
 
-每个 MeCode 必须包含 `core` 模块：
+Every MeCode must contain a `core` module:
 
 ```json
 {
@@ -183,27 +183,27 @@ if (meCode['module:finance']) {
   "core": {
     "id": "my-agent",
     "name": "My Agent",
-    "description": "Agent 描述",
-    "capabilities": ["能力1", "能力2"],
+    "description": "Agent description",
+    "capabilities": ["capability1", "capability2"],
     "owner": {
-      "name": "所有者名称",
+      "name": "Owner Name",
       "url": "https://owner.com"
     }
   }
 }
 ```
 
-### 可选模块
+### Optional Modules
 
-| 模块 | 用途 | 示例字段 |
-|------|------|----------|
-| `module:skills` | 定义可调用的技能 | endpoints, pricing |
-| `module:finance` | 支付信息 | chains, addresses |
-| `module:social` | 社交信息 | karma, followers |
-| `module:a2a` | Agent 间通信 | endpoint, protocol |
-| `module:entry` | 入口链接 | homepage, source |
+| Module | Purpose | Example Fields |
+|--------|---------|----------------|
+| `module:skills` | Define callable skills | endpoints, pricing |
+| `module:finance` | Payment info | chains, addresses |
+| `module:social` | Social info | karma, followers |
+| `module:a2a` | Agent-to-Agent communication | endpoint, protocol |
+| `module:entry` | Entry links | homepage, source |
 
-### 完整示例
+### Complete Example
 
 ```json
 {
@@ -211,7 +211,7 @@ if (meCode['module:finance']) {
   "core": {
     "id": "code-helper",
     "name": "Code Helper",
-    "description": "专业的代码审查助手",
+    "description": "Professional code review assistant",
     "capabilities": ["code-review", "debugging"],
     "owner": {
       "name": "Alice",
@@ -221,7 +221,7 @@ if (meCode['module:finance']) {
   "module:skills": {
     "skills": [{
       "id": "review",
-      "name": "代码审查",
+      "name": "Code Review",
       "endpoint": "https://api.alice.dev/review",
       "method": "POST",
       "price": { "amount": 0.01, "currency": "USDC" }
@@ -237,32 +237,32 @@ if (meCode['module:finance']) {
 
 ---
 
-## 示例代码
+## Examples
 
-查看 [examples/](./examples/) 目录获取更多示例：
+See the [examples/](./examples/) directory for more:
 
-- [基础生成](./examples/01-basic-generation.ts) - 生成简单的 MeCode
-- [完整 MeCode](./examples/02-full-mecode.ts) - 包含所有模块的 MeCode
-- [解析 MeCode](./examples/03-parse-mecode.ts) - 从 SVG 解析数据
-- [调用技能](./examples/04-call-skill.ts) - 调用 Agent 的技能端点
+- [Basic Generation](./examples/01-basic-generation.ts) - Generate simple MeCode
+- [Full MeCode](./examples/02-full-mecode.ts) - MeCode with all modules
+- [Parse MeCode](./examples/03-parse-mecode.ts) - Parse data from SVG
+- [Call Skill](./examples/04-call-skill.ts) - Call Agent's skill endpoint
 
 ---
 
-## 高级用法
+## Advanced Usage
 
-### 卡片主题
+### Card Themes
 
 ```typescript
 const svg = generateACPCard(meCode, {
-  theme: 'matrix',    // 可选: moltbook, matrix, vaporwave, frost, gameboy
-  animated: true,     // 是否启用动画
-  showA2A: true       // 是否显示 A2A 信息
+  theme: 'matrix',    // Options: moltbook, matrix, vaporwave, frost, gameboy
+  animated: true,     // Enable animations
+  showA2A: true       // Show A2A info
 });
 ```
 
-### MCP 集成
+### MCP Integration
 
-将 Agent MeCode 集成到 Claude Desktop：
+Integrate Agent MeCode with Claude Desktop:
 
 ```json
 {
@@ -277,11 +277,11 @@ const svg = generateACPCard(meCode, {
 
 ---
 
-## 文档
+## Documentation
 
-- [协议规范](./docs/zh-CN/specification.md) | [English](./docs/en/specification.md)
-- [技术设计](./docs/zh-CN/technical-design.md) | [English](./docs/en/technical-design.md)
-- [视觉设计](./docs/zh-CN/visual-design.md) | [English](./docs/en/visual-design.md)
+- [Protocol Specification](./docs/en/specification.md) | [中文](./docs/zh-CN/specification.md)
+- [Technical Design](./docs/en/technical-design.md) | [中文](./docs/zh-CN/technical-design.md)
+- [Visual Design](./docs/en/visual-design.md) | [中文](./docs/zh-CN/visual-design.md)
 
 ---
 
@@ -297,22 +297,21 @@ const svg = generateACPCard(meCode, {
 
 ---
 
-## 贡献
+## Contributing
 
-欢迎贡献！请阅读 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解如何参与。
+Contributions welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
 
-## 行为准则
+## Code of Conduct
 
-请阅读我们的 [行为准则](./CODE_OF_CONDUCT.md)。
+Please read our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-## 致谢
+## Acknowledgments
 
-感谢以下项目和社区的启发：
+Thanks to these projects and communities for inspiration:
 
-- [A2A Protocol](https://github.com/google/a2a) - Agent-to-Agent 通信协议
+- [A2A Protocol](https://github.com/google/a2a) - Agent-to-Agent communication protocol
 - [MCP](https://modelcontextprotocol.io/) - Model Context Protocol
-- [Moltbook](https://moltbook.com) - 设计灵感来源
 
-## 开源协议
+## License
 
 [MIT](./LICENSE)
