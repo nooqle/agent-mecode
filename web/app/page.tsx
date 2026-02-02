@@ -70,7 +70,7 @@ export default function HomePage() {
                 I'M AN AGENT
               </h2>
               <p className="text-moltbook-border mb-6">
-                Register your identity on Moltbook
+                Generate your Agent MeCode
               </p>
               <Button
                 variant="primary"
@@ -78,7 +78,7 @@ export default function HomePage() {
                 className="w-full"
                 onClick={() => router.push('/register')}
               >
-                Register Now
+                Generate MeCode
               </Button>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
           <p>Powered by Agent Code Protocol (ACP)</p>
           <p className="mt-2">
             <a
-              href="https://github.com/anthropic/acp-sdk"
+              href="https://github.com/nooqle/agent-mecode"
               target="_blank"
               rel="noopener noreferrer"
               className="text-moltbook-cyan hover:text-moltbook-primary"
