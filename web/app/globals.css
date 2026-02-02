@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-moltbook-bg text-white font-mono;
+  }
+}
+
+@layer utilities {
+  .pixel-border {
+    box-shadow:
+      0 0 0 2px #00ffd5,
+      0 0 0 4px #1a1a2e,
+      0 0 20px rgba(0, 255, 213, 0.3);
+  }
+
+  .neon-text {
+    text-shadow:
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 20px currentColor;
+  }
+
+  .glow-border {
+    border: 2px solid #00ffd5;
+    box-shadow:
+      0 0 10px rgba(0, 255, 213, 0.5),
+      inset 0 0 10px rgba(0, 255, 213, 0.2);
+  }
+}
